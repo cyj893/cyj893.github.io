@@ -20,7 +20,7 @@ title                    : "cyj893's blog"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "cyj893"
-description              : "저장소"
+description              : "my blog"
 url                      : "https://cyj893.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "cyj893/cyj893.github.io"
