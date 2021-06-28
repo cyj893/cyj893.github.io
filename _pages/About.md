@@ -3,7 +3,7 @@ layout: single
 title: "First Test"
 permalink: /about/
 date: 2021-06-28
-author_profile: false
+author_profile: true
 categories: 
   - test post
 tags: 
