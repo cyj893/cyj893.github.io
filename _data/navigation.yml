@@ -9,4 +9,4 @@ main:
  - title: "Archive"
    url: /year-archive/
  - title: "Calc"
-   url: _layouts/calc.html
+   url: /calc/
