@@ -1,3 +1,3 @@
 ---
-layout: _layouts/calc.html
+layout: calc.html
 ---
