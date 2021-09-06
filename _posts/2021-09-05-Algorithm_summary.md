@@ -321,6 +321,22 @@ long long updateSeg(int a, int b, int now, int ind, long long val){
 
 <br></br>
 
+### 좌표 압축
+```cpp
+    for(int i = 1; i <= n; i++){
+        cin >> v[i];
+        comp.push_back(v[i]);
+    }
+    sort(comp.begin(), comp.end());
+    comp.erase(unique(comp.begin(), comp.end()), comp.end());
+    for(int i = 1; i <= n; i++){
+        v[i] = lower_bound(comp.begin(), comp.end(), v[i]) - comp.begin() + 1;
+    }
+
+```
+
+<br></br>
+
 
 ## 수식
 ### 경우의 수
