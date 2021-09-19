@@ -332,7 +332,288 @@ long long updateSeg(int a, int b, int now, int ind, long long val){
     for(int i = 1; i <= n; i++){
         v[i] = lower_bound(comp.begin(), comp.end(), v[i]) - comp.begin() + 1;
     }
+```
 
+<br></br>
+
+### LCA, 두 정점 사이 거리
+```cpp
+vector<P> tree[40001];
+int depth[40001];
+int ac[40001][16];
+int dist[40001];
+int max_level;
+
+void getTree(int now, int pre, int d){
+    depth[now] = depth[pre] + 1;
+    ac[now][0] = pre;
+    dist[now] = d;
+
+    for(int i = 1; i <= max_level; i++){
+        int tmp = ac[now][i - 1];
+        ac[now][i] = ac[tmp][i - 1];
+    }
+
+    for(int i = 0; i < tree[now].size(); i++){
+        int nd = tree[now][i].first;
+        int nx = tree[now][i].second;
+        if( nx != pre ) getTree(nx, now, d + nd);
+    }
+}
+
+int getlca(int a, int b){
+    if( depth[a] != depth[b] ){
+        if( depth[a] > depth[b] ) swap(a, b);
+        for(int i = max_level; i >= 0; i--){
+            if( depth[a] <= depth[ac[b][i]] ){
+                b = ac[b][i];
+            }
+        }
+    }
+    int ret = a;
+    if( a != b ){
+        for(int i = max_level; i >= 0; i--){
+            if( ac[a][i] != ac[b][i] ){
+                a = ac[a][i];
+                b = ac[b][i];
+            }
+            ret = ac[a][i];
+        }
+    }
+    return ret;
+}
+
+// in main()
+
+    max_level = (int)floor(log2(n));
+
+    for(int i = 0; i < n-1; i++){
+        int a, b, c;
+        cin >> a >> b >> c;
+        tree[a].push_back(make_pair(c, b));
+        tree[b].push_back(make_pair(c, a));
+    }
+
+    depth[0] = -1;
+    getTree(1, 0, 0);
+
+
+    // 두 정점 사이 거리
+        int lca = getlca(a, b);
+        dist[a] + dist[b] - 2*dist[lca]
+```
+
+<br></br>
+
+### KMP
+```cpp
+    int psz = p.size();
+    vector<int> pi(psz, 0);
+    int start = 1, matched = 0;
+    while( start + matched < psz ){
+        if( p[start + matched] == p[matched] ){
+            matched++;
+            pi[start + matched - 1] = matched;
+        }
+        else{
+            if( matched == 0 ) start++;
+            else{
+                start += matched - pi[matched - 1];
+                matched = pi[matched - 1];
+            }
+        }
+    }
+
+    vector<int> ans;
+    matched = 0;
+    for(int i = 0; i < t.size(); i++){
+        while( matched > 0 && t[i] != p[matched] ){
+            matched = pi[matched - 1];
+        }
+        if( t[i] == p[matched] ){
+            matched++;
+            if( matched == psz ){
+                ans.push_back(i - psz + 2);
+                matched = pi[matched - 1];
+            }
+        }
+    }
+```
+
+<br></br>
+
+### KMP
+```cpp
+    int psz = p.size();
+    vector<int> pi(psz, 0);
+    int start = 1, matched = 0;
+    while( start + matched < psz ){
+        if( p[start + matched] == p[matched] ){
+            matched++;
+            pi[start + matched - 1] = matched;
+        }
+        else{
+            if( matched == 0 ) start++;
+            else{
+                start += matched - pi[matched - 1];
+                matched = pi[matched - 1];
+            }
+        }
+    }
+
+    vector<int> ans;
+    matched = 0;
+    for(int i = 0; i < t.size(); i++){
+        while( matched > 0 && t[i] != p[matched] ){
+            matched = pi[matched - 1];
+        }
+        if( t[i] == p[matched] ){
+            matched++;
+            if( matched == psz ){
+                ans.push_back(i - psz + 2);
+                matched = pi[matched - 1];
+            }
+        }
+    }
+```
+
+<br></br>
+
+### DAG에서 최장 경로
+```cpp
+vector<P> graph[10001];
+vector<P> revgraph[10001];
+int ind[10001];
+int times[10001];
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+    for(int i = 0; i < m; i++){
+        int a, b, c;
+        cin >> a >> b >> c;
+        graph[a].push_back(make_pair(c, b));
+        revgraph[b].push_back(make_pair(c, a));
+        ind[b]++;
+    }
+    int start, arrival;
+    cin >> start >> arrival;
+
+    queue<int> q;
+    q.push(start);
+    while( q.size() ){
+        int now = q.front();
+        q.pop();
+        for(int j = 0; j < graph[now].size() ; j++){
+            int c = graph[now][j].first;
+            int nx = graph[now][j].second;
+            ind[nx]--;
+            times[nx] = max(times[nx], times[now] + c);
+            if( ind[nx] == 0 ) q.push(nx);
+        }
+    }
+    cout << times[arrival] << '\n';
+
+    q.push(arrival);
+    ind[arrival] = 1;
+    int cnt = 0;
+    while( q.size() ){
+        int now = q.front();
+        q.pop();
+
+        if( now == start ) break;
+
+        for(int j = 0; j < revgraph[now].size() ; j++){
+            int c = revgraph[now][j].first;
+            int nx = revgraph[now][j].second;
+            if( times[now] - c == times[nx] ){
+                cnt++;
+                if( ind[nx] == 0 ){
+                    ind[nx] = 1;
+                    q.push(nx);
+                }
+            }
+        }
+    }
+    cout << cnt << '\n';
+}
+```
+
+<br></br>
+
+### SCC
+```cpp
+vector<int> graph[10001];
+vector<int> revgraph[10001];
+int visited[10001];
+priority_queue<P, vector<P>, less<>> pq;
+vector< vector<int> > ans;
+int d;
+
+void func(int now){
+    for(int i = 0; i < graph[now].size(); i++){
+        int nx = graph[now][i];
+        if( visited[nx] == 0 ){
+            visited[nx] = 1;
+            d++;
+            func(nx);
+        }
+    }
+    d++;
+    pq.push(make_pair(d, now));
+}
+
+void func2(int now, int ind){
+    for(int i = 0; i < revgraph[now].size(); i++){
+        int nx = revgraph[now][i];
+        if( visited[nx] == 0 ){
+            visited[nx] = 1;
+            ans[ind].push_back(nx);
+            func2(nx, ind);
+        }
+    }
+}
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int v, e;
+    cin >> v >> e;
+    for(int i = 0; i < e; i++){
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        revgraph[b].push_back(a);
+    }
+
+    d = 1;
+    for(int i = 1; i <= v; i++){
+        if( visited[i] ) continue;
+        visited[i] = 1;
+        func(i);
+    }
+
+    for(int i = 1; i <= v; i++){
+        visited[i] = 0;
+    }
+    int ind = 0;
+    while( pq.size() ){
+        int now = pq.top().second;
+        pq.pop();
+
+        if( visited[now] ) continue;
+
+        vector<int> t = {now};
+        ans.push_back(t);
+        visited[now] = 1;
+        func2(now, ind);
+        ind++;
+    }
+}
 ```
 
 <br></br>
