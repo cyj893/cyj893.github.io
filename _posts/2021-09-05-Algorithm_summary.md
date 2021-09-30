@@ -704,6 +704,53 @@ int main(){
 
 <br></br>
 
+### Inversion 개수 세기
+#### Merge Sort
+```cpp
+int n;
+int nums[500001], sorted[500001];
+long long cnt;
+
+void myMerge(int l, int mid, int r){
+	int a = l, b = mid + 1, k = l;
+	while(a <= mid && b <= r){
+		if( nums[a] <= nums[b] ) sorted[k++] = nums[a++];
+		else{
+			cnt += (mid - a + 1);
+			sorted[k++] = nums[b++];
+		}
+	}
+	if( a <= mid ){
+		for(int i = a; i <= mid; i++){
+            sorted[k++] = nums[i];
+		}
+	}
+	else{
+		for(int i = b; i <= r; i++){
+            sorted[k++] = nums[i];
+		}
+	}
+	for(int i = l; i <= r; i++){
+        nums[i] = sorted[i];
+	}
+}
+
+void mergeSort(int l, int r){
+	if( l < r ){
+		int mid = (l + r) / 2;
+		mergeSort(l, mid);
+		mergeSort(mid + 1, r);
+		myMerge(l, mid, r);
+	}
+}
+
+// in main()
+    mergeSort(1, n);
+    cout << cnt << endl;
+
+```
+<br></br>
+
 
 ## 수식
 ### 경우의 수
@@ -724,6 +771,7 @@ nCr[n][0] + nCr[n][2] + ... = 2^(n-1)
 ex) aaabb => 5! / (3! * 2!), 최단거리 길찾기
 n! / (an! * bn! * ... * zn!)
 ```
+<br></br>
 
 #### 중복 조합
 ```cpp
