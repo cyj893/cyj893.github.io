@@ -442,39 +442,125 @@ int getlca(int a, int b){
 
 <br></br>
 
-### KMP
+### LIS
+#### 이분탐색
 ```cpp
-    int psz = p.size();
-    vector<int> pi(psz, 0);
-    int start = 1, matched = 0;
-    while( start + matched < psz ){
-        if( p[start + matched] == p[matched] ){
-            matched++;
-            pi[start + matched - 1] = matched;
+pair<int, int> line[100001];
+pair<int, int> tracking[100001];
+vector<int> ind;
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n;
+    cin >> n;
+    for(int i = 0; i < n; i++){
+        int a, b;
+        cin >> a >> b;
+        line[i] = make_pair(a, b);
+    }
+
+    sort(line, line + n);
+
+    ind.push_back(line[0].second);
+    tracking[0] = make_pair(1, line[0].first);
+    for(int i = 1; i < n; i++){
+        int a = line[i].first;
+        int b = line[i].second;
+        if( b > ind.back() ){
+            ind.push_back(b);
+            tracking[i] = make_pair(ind.size(), a);
         }
         else{
-            if( matched == 0 ) start++;
-            else{
-                start += matched - pi[matched - 1];
-                matched = pi[matched - 1];
-            }
+            auto it = lower_bound(ind.begin(), ind.end(), b);
+            *it = min(*it, b);
+            tracking[i] = make_pair(it-ind.begin()+1, a);
         }
     }
 
-    vector<int> ans;
-    matched = 0;
-    for(int i = 0; i < t.size(); i++){
-        while( matched > 0 && t[i] != p[matched] ){
-            matched = pi[matched - 1];
-        }
-        if( t[i] == p[matched] ){
-            matched++;
-            if( matched == psz ){
-                ans.push_back(i - psz + 2);
-                matched = pi[matched - 1];
-            }
+    cout << ind.size() << '\n';
+
+    stack<int> st;
+    int t = ind.size();
+    for(int i = n-1; i >= 0; i--){
+        if( tracking[i].first == t ){
+            st.push(tracking[i].second);
+            t--;
         }
     }
+    while( st.size() ){
+        cout << st.top() << '\n';
+        st.pop();
+    }
+}
+```
+
+<br></br>
+
+#### 세그먼트 트리
+```cpp
+int n;
+pair<int, int> v[1000001];
+vector<int> segtree;
+
+int maxSeg(int a, int b, int now, int l, int r){
+    if( r < a || b < l ) return 0;
+    if( l <= a && b <= r ) return segtree[now];
+    int mid = (a+b) / 2;
+    return max(maxSeg(a, mid, now*2, l, r), maxSeg(mid+1, b, now*2+1, l, r));
+}
+
+int updateSeg(int a, int b, int now, int ind, int change){
+    if( ind < a || b < ind ) return 0;
+    if( a == b ) return segtree[now] = change;
+    int mid = (a+b) / 2;
+    return segtree[now] = max({segtree[now], updateSeg(a, mid, now*2, ind, change), updateSeg(mid+1, b, now*2+1, ind, change)});
+}
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    cin >> n;
+    for(int i = 0; i < n; i++){
+        int a;
+        cin >> a;
+        v[i] = make_pair(a, i);
+    }
+    sort(v, v + n, [](pair<int, int> p, pair<int, int> q) {
+		if (p.first != q.first) return p.first < q.first;
+		return p.second > q.second;
+	});
+
+    int h = ceil(log2(n));
+    segtree.assign(1<<(h+1), 0);
+
+    stack< pair<int, int> > st;
+    for(int i = 0; i < n; i++){
+        int a = maxSeg(0, n-1, 1, 0, v[i].second) + 1;
+        updateSeg(0, n-1, 1, v[i].second, a);
+        st.push(make_pair(a, v[i].first));
+    }
+    int m = maxSeg(0, n-1, 1, 0, n-1);
+    cout << m << endl;
+
+    stack<int> st2;
+    m++;
+    while( st.size() ){
+        while( st.size() && st.top().first != m-1 ){
+            st.pop();
+        }
+        st2.push(st.top().second);
+        m = st.top().first;
+        if( m == 1 ) break;
+    }
+
+    while( st2.size() ){
+        cout << st2.top() << ' ';
+        st2.pop();
+    }
+}
 ```
 
 <br></br>
