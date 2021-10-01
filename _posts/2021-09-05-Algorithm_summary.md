@@ -751,6 +751,58 @@ void mergeSort(int l, int r){
 ```
 <br></br>
 
+### Bipartite Matching
+```cpp
+vector<int> v[1001];
+int work[1001];
+int visited[1001];
+
+bool dfs(int now){
+    visited[now] = 1;
+
+    for(int i = 0; i < v[now].size(); i++){
+        int nx = v[now][i];
+        if( work[nx] == 0 || (visited[work[nx]] == 0 && dfs(work[nx])) ){
+            work[nx] = now;
+            return true;
+        }
+    }
+    return false;
+}
+
+int main(){
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, m;
+    cin >> n >> m;
+    for(int i = 1; i <= n; i++){
+        int a;
+        cin >> a;
+        for(int j = 0; j < a; j++){
+            int b;
+            cin >> b;
+            v[i].push_back(b);
+        }
+    }
+
+    int ans = 0;
+    for(int i = 1; i <= n; i++){
+        for(int k = 0; k < 매칭가능한 최대 개수; k++){
+            for(int j = 0; j < n; j++){
+                visited[j] = 0;
+            }
+            if( dfs(i) ) ans++;
+        }
+    }
+
+    cout << ans << endl;
+
+}
+```
+
+<br></br>
+
 
 ## 수식
 ### 경우의 수
