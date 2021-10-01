@@ -898,19 +898,35 @@ ans = sarea / 2;
 
 #### 교차 판단
 ```cpp
-int ccw(pair<long long, long long> &a,
-          pair<long long, long long> &b,
-          pair<long long, long long> &c){
-    long long x1 = a.first;
-    long long y1 = a.second;
-    long long x2 = b.first;
-    long long y2 = b.second;
-    long long x3 = c.first;
-    long long y3 = c.second;
-    long long ret = x2*y1 + x3*y2 + x1*y3 - (x1*y2 + x2*y3 + x3*y1);
+int sarea(P a, P b, P c){
+    ll x1 = a.first;
+    ll y1 = a.second;
+    ll x2 = b.first;
+    ll y2 = b.second;
+    ll x3 = c.first;
+    ll y3 = c.second;
+    ll ret = x2*y1 + x3*y2 + x1*y3 - (x1*y2 + x2*y3 + x3*y1);
     if( ret < 0 ) return 1;
     if( ret == 0 ) return 0;
     return -1;
+}
+
+bool isCross(P a, P b, P c, P d){
+    int abc = sarea(a, b, c);
+    int abd = sarea(a, b, d);
+    int cda = sarea(c, d, a);
+    int cdb = sarea(c, d, b);
+
+    if( abc*abd <= 0 && cda*cdb <= 0 ){
+        if( abc*abd == 0 && cda*cdb == 0 ){
+            if( a > b ) swap(a, b);
+            if( c > d ) swap(c, d);
+            if( a <= d && c <= b ) return true;
+            else return false;
+        }
+        else return true;
+    }
+    else return false;
 }
 ```
 <br></br>
