@@ -2,7 +2,6 @@
 {% assign sum = site.posts | size %}
 
 <nav>
-  <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label }}</label>
   <ul id="category_tag_menu">
       <li>
             전체 글 수 {{sum}}개
