@@ -19,6 +19,34 @@
                     {% endif %}
                 {% endfor %}
             </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "Android" %}
+                        <li><a href="/categories/Android" class="">Android ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "Azure" %}
+                        <li><a href="/categories/Azure" class="">Azure ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "Network" %}
+                        <li><a href="/categories/Network" class="">Network ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul>
+                {% for category in site.categories %}
+                    {% if category[0] == "Web" %}
+                        <li><a href="/categories/Web" class="">Web ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
 			
       </li>
   </ul>
