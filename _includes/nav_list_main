@@ -7,7 +7,7 @@
             전체 글 수 {{sum}}개
       </li>
       <li>
-        <span "background-color: #2b2301; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Category</span>
+        <span style = "background-color: #2b2301; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Category</span>
             <ul>
                 {% for category in site.categories %}
                     {% if category[0] == "Algorithm" %}
