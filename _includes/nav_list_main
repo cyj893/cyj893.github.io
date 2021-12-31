@@ -2,7 +2,6 @@
 {% assign sum = site.posts | size %}
 
 <nav>
-  <input id="ac-toc" name="accordion-toc" type="checkbox" />
   <label for="ac-toc">{{ site.data.ui-text[site.locale].menu_label }}</label>
   <ul id="category_tag_menu">
       <li>
