@@ -4,9 +4,6 @@
 <nav>
   <ul id="category_tag_menu">
       <li>
-            전체 글 수 {{sum}}개
-      </li>
-      <li>
         <span style = "font-size: 100%; background-color: #5e9ca0; color: #fff; display: inline-block; padding: 3px 10px; font-weight: bold; border-radius: 5px;">Category</span>
             <ul style="padding: 3px 10px;">
                 {% for category in site.categories %}
@@ -44,6 +41,9 @@
                 {% endfor %}
             </ul>
 			
+      </li>
+      <li>
+            전체 글 수 {{sum}}개
       </li>
   </ul>
 </nav>
