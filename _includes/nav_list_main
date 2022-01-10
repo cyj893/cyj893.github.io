@@ -28,6 +28,13 @@
             </ul>
             <ul style="font-size: 100%; padding: 3px 10px;">
                 {% for category in site.categories %}
+                    {% if category[0] == "Flutter" %}
+                        <li><a href="/categories/Flutter" class="">Flutter ({{category[1].size}})</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <ul style="font-size: 100%; padding: 3px 10px;">
+                {% for category in site.categories %}
                     {% if category[0] == "Network" %}
                         <li><a href="/categories/Network" class="">Network ({{category[1].size}})</a></li>
                     {% endif %}
