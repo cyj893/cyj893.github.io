@@ -6,5 +6,7 @@ main:
    url: /tags/
  - title: "Archive"
    url: /year-archive/
+ - title: "마크다운 표 생성기"
+   url: https://cyj893.github.io/markdown_table_generator/
  - title: "Calc"
    url: https://cyj893.github.io/calc.html
